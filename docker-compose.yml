@@ -20,6 +20,7 @@ services:
 
     rss-bridge:
         image: rssbridge/rss-bridge:latest
+        restart: on-failure
         environment:
             - TZ=Europe/Stockholm
         ports:
