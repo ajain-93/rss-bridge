@@ -1,0 +1,29 @@
+
+---
+version: '3'
+#restart: unless-stopped
+#restart: on-failure
+
+
+services:
+
+#    {name}:
+#        image: 
+#        restart: on-failure
+#        environment:
+#            - PUID=1000
+#            - PGID=1000
+#            - TZ=Europe/Stockholm
+#        volumes:
+#        ports:
+#        expose:
+
+    rss-bridge:
+        image: rssbridge/rss-bridge:latest
+        environment:
+            - TZ=Europe/Stockholm
+        ports:
+            - 3000:80
+        volumes:
+            - ./bridges:/app/bridges
+            - ./whitelist.txt:/app/whitelist.txt
