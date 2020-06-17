@@ -4,3 +4,4 @@ InstagramBridge
 SolnaStadBridge
 TwitterBridge
 YoutubeBridge
+AviationHeraldBridge
