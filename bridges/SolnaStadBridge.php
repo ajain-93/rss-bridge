@@ -17,7 +17,19 @@ class SolnaStadBridge extends BridgeAbstract {
 			$url = $link->href;
 			$title = $element->find('h3', 0)->plaintext;
 			$datetime = strtotime($element->find('time', 0)->datetime);
-			$content = $element->find('p', 0)->plaintext;
+			
+            $article_html = getSimpleHTMLDOMCached($url, 1800 )
+			or returnServerError('Could not request article: ' . self::URI);
+			
+			$content_div = $article_html->find('.pagecontent.sv-layout', 0);
+			$content = "<i>";
+			$content .= $content_div->find('p.preamble', 0)->plaintext;
+			$content .= "</i>";
+			foreach($content_div->find('p.normal') as $text) {
+				$content .= "<br/><br/>";
+				$content .= $text->plaintext;
+			}
+			
 
 			$item = array();
 			$item['uri'] = $url;
