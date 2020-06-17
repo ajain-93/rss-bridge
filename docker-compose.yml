@@ -28,3 +28,4 @@ services:
         volumes:
             - ./bridges:/app/bridges
             - ./whitelist.txt:/app/whitelist.txt
+            - ./DEBUG.file:/app/DEBUG
