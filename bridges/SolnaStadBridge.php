@@ -18,25 +18,37 @@ class SolnaStadBridge extends BridgeAbstract {
 			$title = $element->find('h3', 0)->plaintext;
 			$datetime = strtotime($element->find('time', 0)->datetime);
 			
-            $article_html = getSimpleHTMLDOMCached($url, 1800 )
-			or returnServerError('Could not request article: ' . self::URI);
+            $article_html = getSimpleHTMLDOMCached($url, 1800)
+				or returnServerError('Could not request article: ' . self::URI);
 			
 			$content_div = $article_html->find('.pagecontent.sv-layout', 0);
-			$content = "<i>";
-			$content .= $content_div->find('p.preamble', 0)->plaintext;
-			$content .= "</i>";
-			foreach($content_div->find('p.normal') as $text) {
-				$content .= "<br/><br/>";
-				$content .= $text->plaintext;
+			foreach($content_div->find('div.sv-text-portlet.sv-use-margins') as $div) {
+				
+				// Debug::log($div);
+				
+				$isTitle = strlen($div->find('div#Rubrik', 0)) > 0;
+				if ($isTitle) {
+					$title = $div->find('div.sv-text-portlet-content', 0)->plaintext;
+					// Debug::log($title);
+				}
+				$isIntro = strlen($div->find('div#Ingress', 0)) > 0;
+				if ($isIntro) {
+					$intro = $div->find('div.sv-text-portlet-content', 0);
+					// Debug::log($intro);
+				}
+				$isText = strlen($div->find('div#Text', 0)) > 0;
+				if ($isText) {
+					$text = $div->find('div.sv-text-portlet-content', 0);
+					// Debug::log($text);
+				}
 			}
-			
 
 			$item = array();
 			$item['uri'] = $url;
 			$item['title'] = $title;
 			$item['author'] = 'Solna Stad';
 			$item['timestamp'] = $datetime;
-			$item['content'] = trim($content);
+			$item['content'] = trim("<i>" . $intro . "</i>" . $text);
 			$this->items[] = $item;
 		}
 	}
