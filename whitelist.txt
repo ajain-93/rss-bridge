@@ -5,3 +5,4 @@ SolnaStadBridge
 TwitterBridge
 YoutubeBridge
 AviationHeraldBridge
+BicyclingKristerIsakssonBridge
