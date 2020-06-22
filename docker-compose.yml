@@ -24,7 +24,7 @@ services:
         environment:
             - TZ=Europe/Stockholm
         ports:
-            - 3000:80
+            - 3030:80
         volumes:
             - ./bridges:/app/bridges
             - ./whitelist.txt:/app/whitelist.txt
