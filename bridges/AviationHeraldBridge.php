@@ -16,18 +16,12 @@ class AviationHeraldBridge extends BridgeAbstract {
 		foreach($html->find('td#ad1cell.center_td table') as $element) {
 
             if(count($this->items) > $limit) {
-            break;
+                break;
             }
-    
-            // Debug::log($element);
             
             $title_span = $element->find('span.headline_avherald', 0);
             $is_article = strlen($title_span) > 0;
             if (!$is_article) {
-                // $date_span = $element->find('span.bheadline_avherald', 0);
-                // $date = $date_span->plaintext;
-
-                // Debug::log($date);
                 continue;
             } 
             $title = $title_span->plaintext;
@@ -39,8 +33,8 @@ class AviationHeraldBridge extends BridgeAbstract {
             // Debug::log("Link: " . $link);
             // Debug::log("URL: " . $url);
             
-            $article_html = getSimpleHTMLDOMCached($url, 1800 )
-			or returnServerError('Could not request article: ' . self::URI);
+            $article_html = getSimpleHTMLDOMCached($url, 18000)
+			    or returnServerError('Could not request article: ' . self::URI);
             
             $metadata = $article_html->find('.time_avherald', 0)->plaintext;
             $last_updated_start = strpos($metadata, "last updated");
@@ -53,8 +47,6 @@ class AviationHeraldBridge extends BridgeAbstract {
             
             $content_all = $article_html->find('td#ad1cell.center_td', 0);
             $content = $content_all->find('span.sitetext', 0);
-            // Debug::log($content);
-            
 
 			$item = array();
 			$item['uri'] = $url;
@@ -63,7 +55,6 @@ class AviationHeraldBridge extends BridgeAbstract {
 			$item['timestamp'] = $datetime;
 			$item['content'] = trim($content);
 			$this->items[] = $item;
-            // break;
 		}
 	}
 }
