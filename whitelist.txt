@@ -7,3 +7,4 @@ YoutubeBridge
 AviationHeraldBridge
 BicyclingKristerIsakssonBridge
 RedditBridge
+SoundcloudBridge
