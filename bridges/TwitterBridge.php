@@ -210,11 +210,27 @@ EOD
 
 		$hidePictures = $this->getInput('nopic');
 
+		$promotedTweetIds = array_reduce($data->timeline->instructions[0]->addEntries->entries, function($carry, $entry) {
+			if (!isset($entry->content->item)) {
+				return $carry;
+			}
+			$tweet = $entry->content->item->content->tweet;
+			if (isset($tweet->promotedMetadata)) {
+				$carry[] = $tweet->id;
+			}
+			return $carry;
+		}, array());
+
 		foreach($data->globalObjects->tweets as $tweet) {
 
 			/* Debug::log('>>> ' . json_encode($tweet)); */
 			// Skip spurious retweets
 			if (isset($tweet->retweeted_status_id_str) && substr($tweet->full_text, 0, 4) === 'RT @') {
+				continue;
+			}
+
+			// Skip promoted tweets
+			if (in_array($tweet->id_str, $promotedTweetIds)) {
 				continue;
 			}
 
@@ -416,6 +432,10 @@ EOD;
 			}
 			if (!$jsMainMatches) {
 				$jsMainRegex = '/(https:\/\/abs\.twimg\.com\/responsive-web\/client-web\/main\.[^\.]+\.js)/m';
+				preg_match_all($jsMainRegex, $twitterPage, $jsMainMatches, PREG_SET_ORDER, 0);
+			}
+			if (!$jsMainMatches) {
+				$jsMainRegex = '/(https:\/\/abs\.twimg\.com\/responsive-web\/client-web-legacy\/main\.[^\.]+\.js)/m';
 				preg_match_all($jsMainRegex, $twitterPage, $jsMainMatches, PREG_SET_ORDER, 0);
 			}
 			if (!$jsMainMatches) {
