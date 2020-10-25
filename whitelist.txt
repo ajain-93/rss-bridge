@@ -8,3 +8,4 @@ AviationHeraldBridge
 BicyclingKristerIsakssonBridge
 RedditBridge
 SoundcloudBridge
+GoComicsBridge
