@@ -81,7 +81,8 @@ class AviationHeraldBridge extends BridgeAbstract {
 			if (!$is_article) {
 				continue;
 			}
-			$title = $title_span->plaintext;
+			$category = $element->find('img', 0)->title;
+			$title = substr($category,0,1) . ": " . $title_span->plaintext;
 			$link = $element->find('a', 0);
 			$url = self::URI . $link->href;
 
@@ -89,6 +90,7 @@ class AviationHeraldBridge extends BridgeAbstract {
 			// Debug::log("Article: " . $title);
 			// Debug::log("Link: " . $link);
 			// Debug::log("URL: " . $url);
+			// Debug::log("Category: " . $category);
 
 			$article_html = getSimpleHTMLDOMCached($url, 18000)
 				or returnServerError('Could not request article: ' . self::URI);
