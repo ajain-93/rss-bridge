@@ -5,11 +5,68 @@ class AviationHeraldBridge extends BridgeAbstract {
 	const URI		  = 'https://avherald.com';
 	const DESCRIPTION = 'Returns the latest articles';
 	const MAINTAINER  = 'ajain-93';
+	const PARAMETERS = array(
+		'' => array(
+			'crashes' => array(
+				'name' => 'Include Crashes',
+				'type' => 'checkbox',
+				'defaultValue' => 'checked',
+			),
+			'accidents' => array(
+				'name' => 'Include Accidents',
+				'type' => 'checkbox',
+				'defaultValue' => 'checked',
+			),
+			'incidents' => array(
+				'name' => 'Include Incidents',
+				'type' => 'checkbox',
+				'defaultValue' => 'checked',
+			),
+			'news' => array(
+				'name' => 'Include News',
+				'type' => 'checkbox',
+				'defaultValue' => 'checked',
+			),
+			'reports' => array(
+				'name' => 'Include Reports',
+				'type' => 'checkbox',
+				'defaultValue' => 'checked',
+			),
+		)
+	);
 
 	public function collectData(){
 
-		$html = getSimpleHTMLDOM(self::URI)
-			or returnServerError('Could not request list: ' . self::URI);
+		$powBase = 8;
+		$options = pow(2,5+$powBase) - pow(2,$powBase);
+		if ($this->getInput('crashes') == 1) {
+			$options = $options - pow(2,0+$powBase);
+		};
+		if ($this->getInput('accidents') == 1) {
+			$options = $options - pow(2,1+$powBase);
+		};
+		if ($this->getInput('incidents') == 1) {
+			$options = $options - pow(2,2+$powBase);
+		};
+		if ($this->getInput('news') == 1) {
+			$options = $options - pow(2,3+$powBase);
+		};
+		if ($this->getInput('reports') == 1) {
+			$options = $options - pow(2,4+$powBase);
+		};
+
+		// Debug::log($this->getInput('crashes'));
+		// Debug::log($this->getInput('accidents'));
+		// Debug::log($this->getInput('incidents'));
+		// Debug::log($this->getInput('news'));
+		// Debug::log($this->getInput('reports'));
+		// Debug::log($options);
+
+		Debug::log(self::URI . "/h?opt=" . $options);
+		$url = self::URI . "/h?opt=" . $options;
+
+		$html = getSimpleHTMLDOM($url)
+			or returnServerError('Could not request list: ' . $url);
 
 		$limit = 10;
 
