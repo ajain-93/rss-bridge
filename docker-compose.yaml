@@ -13,6 +13,6 @@ services:
             - TZ=Europe/Stockholm
         volumes:
             - ./bridges:/app/bridges/
-            - ./whitelist.txt:/app/whitelist.txt
+            - ./whitelist.custom.txt:/app/whitelist.txt
         ports:
             - 3030:80
