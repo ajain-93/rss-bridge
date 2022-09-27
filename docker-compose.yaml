@@ -14,5 +14,6 @@ services:
         volumes:
             - ./bridges:/app/bridges/
             - ./whitelist.custom.txt:/app/whitelist.txt
+            - ./config.custom.ini.php:/app/config.ini.php
         ports:
             - 3030:80
