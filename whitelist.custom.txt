@@ -12,3 +12,4 @@ GoComicsBridge
 ComicsKingdomBridge
 RegionStockholmBridge
 ArbetsdomstolenBridge
+LudvikaKommunBridge
