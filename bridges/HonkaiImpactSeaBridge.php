@@ -1,24 +1,26 @@
 <?php
 
-class GenshinImpactBridge extends BridgeAbstract
+class HonkaiImpactSeaBridge extends BridgeAbstract
 {
-    const MAINTAINER = 'corenting';
-    const NAME = 'Genshin Impact';
-    const URI = 'https://genshin.mihoyo.com/en/news';
+    const MAINTAINER = 'hpacleb';
+    const NAME = 'Honkai Impact SEA';
+    const URI = 'https://honkaiimpact3.hoyoverse.com/asia/en-us/news';
     const CACHE_TIMEOUT = 7200; // 2h
-    const DESCRIPTION = 'News from the Genshin Impact website';
+    const DESCRIPTION = 'News from the Honkai Impact SEA website';
     const PARAMETERS = [
         [
             'category' => [
                 'name' => 'Category',
                 'type' => 'list',
                 'values' => [
-                    'Latest' => 10,
-                    'Info' => 11,
-                    'Updates' => 12,
-                    'Events' => 13
+                    'Latest' => 403,
+                    'Info' => 404,
+                    'Updates' => 405,
+                    'Events' => 406,
+                    'Guides' => 407,
+                    'Other' => 408
                 ],
-                'defaultValue' => 10
+                'defaultValue' => 403
             ]
         ]
     ];
@@ -27,14 +29,14 @@ class GenshinImpactBridge extends BridgeAbstract
     {
         $category = $this->getInput('category');
 
-        $url = 'https://genshin.mihoyo.com/content/yuanshen/getContentList';
-        $url = $url . '?pageSize=5&pageNum=1&channelId=' . $category;
+        $url = 'https://sg-content-static-sea.hoyoverse.com/content/bh3Sea/getContentList';
+        $url = $url . '?pageSize=10&pageNum=1&game_biz=bh3_os&channelId=' . $category;
         $api_response = getContents($url);
         $json_list = json_decode($api_response, true);
 
         foreach ($json_list['data']['list'] as $json_item) {
-            $article_url = 'https://genshin.mihoyo.com/content/yuanshen/getContent';
-            $article_url = $article_url . '?contentId=' . $json_item['contentId'];
+            $article_url = 'https://sg-content-static-sea.hoyoverse.com/content/bh3Sea/getContent?game_biz=bh3_os&';
+            $article_url = $article_url . 'contentId=' . $json_item['contentId'];
             $article_res = getContents($article_url);
             $article_json = json_decode($article_res, true);
             $article_time = $article_json['data']['start_time'];
@@ -51,7 +53,7 @@ class GenshinImpactBridge extends BridgeAbstract
 
             // Picture
             foreach ($article_json['data']['ext'] as $ext) {
-                if ($ext['arrtName'] == 'banner' && count($ext['value']) == 1) {
+                if ($ext['arrtName'] == '新闻封面' && count($ext['value']) == 1) {
                     $item['enclosures'] = [$ext['value'][0]['url']];
                     break;
                 }
@@ -63,11 +65,11 @@ class GenshinImpactBridge extends BridgeAbstract
 
     public function getIcon()
     {
-        return 'https://genshin.mihoyo.com/favicon.ico';
+        return 'https://honkaiimpact3.hoyoverse.com/favicon.ico';
     }
 
     private function getArticleUri($json_item)
     {
-        return 'https://genshin.mihoyo.com/en/news/detail/' . $json_item['contentId'];
+        return 'https://honkaiimpact3.hoyoverse.com/asia/en-us/news/' . $json_item['contentId'];
     }
 }
