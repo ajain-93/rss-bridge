@@ -15,3 +15,4 @@ ArbetsdomstolenBridge
 LudvikaKommunBridge
 RegionDalarnaBridge
 AmazonPriceTrackerBridge
+TrafikverketRV5066LudvikaBridge
