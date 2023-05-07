@@ -125,9 +125,18 @@ function getContents(
         $httpHeadersNormalized[$headerName] = $headerValue;
     }
     $config = [
+        'useragent' => Configuration::getConfig('http', 'useragent'),
+        'timeout' => Configuration::getConfig('http', 'timeout'),
         'headers' => array_merge($defaultHttpHeaders, $httpHeadersNormalized),
         'curl_options' => $curlOptions,
     ];
+
+    $maxFileSize = Configuration::getConfig('http', 'max_filesize');
+    if ($maxFileSize) {
+        // Multiply with 2^20 (1M) to the value in bytes
+        $config['max_filesize'] = $maxFileSize * 2 ** 20;
+    }
+
     if (Configuration::getConfig('proxy', 'url') && !defined('NOPROXY')) {
         $config['proxy'] = Configuration::getConfig('proxy', 'url');
     }
@@ -169,29 +178,28 @@ function getContents(
             $response['content'] = $cache->loadData();
             break;
         default:
-            if (Debug::isEnabled()) {
-                // Include a part of the response body in the exception message
-                throw new HttpException(
-                    sprintf(
-                        '%s resulted in `%s %s: %s`',
-                        $url,
-                        $result['code'],
-                        Response::STATUS_CODES[$result['code']] ?? '',
-                        mb_substr($result['body'], 0, 500),
-                    ),
-                    $result['code']
-                );
-            } else {
-                throw new HttpException(
-                    sprintf(
-                        '%s resulted in `%s %s`',
-                        $url,
-                        $result['code'],
-                        Response::STATUS_CODES[$result['code']] ?? '',
-                    ),
-                    $result['code']
-                );
+            $exceptionMessage = sprintf(
+                '%s resulted in %s %s %s',
+                $url,
+                $result['code'],
+                Response::STATUS_CODES[$result['code']] ?? '',
+                // If debug, include a part of the response body in the exception message
+                Debug::isEnabled() ? mb_substr($result['body'], 0, 500) : '',
+            );
+
+            // The following code must be extracted if it grows too much
+            $cloudflareTitles = [
+                '<title>Just a moment...',
+                '<title>Please Wait...',
+                '<title>Attention Required!'
+            ];
+            foreach ($cloudflareTitles as $cloudflareTitle) {
+                if (str_contains($result['body'], $cloudflareTitle)) {
+                    throw new CloudFlareException($exceptionMessage, $result['code']);
+                }
             }
+
+            throw new HttpException($exceptionMessage, $result['code']);
     }
     if ($returnFull === true) {
         return $response;
@@ -200,22 +208,22 @@ function getContents(
 }
 
 /**
- * Private function used internally
- *
  * Fetch content from url
  *
+ * @internal Private function used internally
  * @throws HttpException
  */
 function _http_request(string $url, array $config = []): array
 {
     $defaults = [
-        'useragent' => Configuration::getConfig('http', 'useragent'),
-        'timeout' => Configuration::getConfig('http', 'timeout'),
+        'useragent' => null,
+        'timeout' => 5,
         'headers' => [],
         'proxy' => null,
         'curl_options' => [],
         'if_not_modified_since' => null,
         'retries' => 3,
+        'max_filesize' => null,
     ];
     $config = array_merge($defaults, $config);
 
@@ -229,12 +237,27 @@ function _http_request(string $url, array $config = []): array
         $httpHeaders[] = sprintf('%s: %s', $name, $value);
     }
     curl_setopt($ch, CURLOPT_HTTPHEADER, $httpHeaders);
-    curl_setopt($ch, CURLOPT_USERAGENT, $config['useragent']);
+    if ($config['useragent']) {
+        curl_setopt($ch, CURLOPT_USERAGENT, $config['useragent']);
+    }
     curl_setopt($ch, CURLOPT_TIMEOUT, $config['timeout']);
     curl_setopt($ch, CURLOPT_ENCODING, '');
     curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
-    // Force HTTP 1.1 because newer versions of libcurl defaults to HTTP/2
-    curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+
+    if ($config['max_filesize']) {
+        // This option inspects the Content-Length header
+        curl_setopt($ch, CURLOPT_MAXFILESIZE, $config['max_filesize']);
+        curl_setopt($ch, CURLOPT_NOPROGRESS, false);
+        // This progress function will monitor responses who omit the Content-Length header
+        curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, function ($ch, $downloadSize, $downloaded, $uploadSize, $uploaded) use ($config) {
+            if ($downloaded > $config['max_filesize']) {
+                // Return a non-zero value to abort the transfer
+                return -1;
+            }
+            return 0;
+        });
+    }
+
     if ($config['proxy']) {
         curl_setopt($ch, CURLOPT_PROXY, $config['proxy']);
     }

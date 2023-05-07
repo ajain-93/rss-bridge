@@ -66,16 +66,9 @@ p {
 
 /* Header */
 header {
-    margin-top: 40px;
     padding: 15px;
     color: #1182DB;
-}
-
-header > div.logo {
-    background-image: url(logo_600px.png);
-    width: 599px;
-    height: 177px;
-    margin: auto;
+    text-align: center;
 }
 
 section.warning {
@@ -139,7 +132,7 @@ input:focus:-ms-input-placeholder { opacity: 0; }
 
 .container {
     width: 60%;
-    margin: 30px auto;
+    margin: 0 auto 30px auto;
 }
 
 /* Section */
@@ -349,6 +342,15 @@ button {
     width: 200px;
 }
 
+.alert {
+    margin-bottom: 15px;
+    color: white;
+    font-weight: bold;
+    background-color: rgb(33, 150, 243);
+    padding: 15px;
+    border-radius: 4px;
+}
+
 @media screen and (max-width: 767px) {
     .container {
         width: 100%;
@@ -357,12 +359,6 @@ button {
 
     .searchbar {
         margin-bottom: 5px;
-    }
-
-    header > div.logo {
-        background-image: url(logo_300px.png);
-        width: 300px;
-        height: 89px;
     }
 
     button {
