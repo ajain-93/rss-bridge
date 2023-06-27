@@ -6,6 +6,9 @@
 
 [system]
 
+; Only these bridges are available for feed production
+enabled_bridges[] = *
+
 ; Defines the timezone used by RSS-Bridge
 ; Find a list of supported timezones at
 ; https://www.php.net/manual/en/timezones.php
@@ -14,6 +17,13 @@ timezone = "UTC"
 
 ; Display a system message to users.
 message = ""
+
+; Whether to enable debug mode.
+enable_debug_mode = false
+
+; Enable debug mode only for these permitted ip addresses
+; debug_mode_whitelist[] = 127.0.0.1
+; debug_mode_whitelist[] = 192.168.1.10
 
 [http]
 timeout = 60
