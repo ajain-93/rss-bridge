@@ -16,3 +16,4 @@ LudvikaKommunBridge
 RegionDalarnaBridge
 AmazonPriceTrackerBridge
 TrafikverketRV5066LudvikaBridge
+NotAlwaysBridge
