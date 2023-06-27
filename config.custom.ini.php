@@ -128,3 +128,8 @@ port = 11211
 ;
 ; "" = no token used (default)
 personal_access_token = ""
+
+[InstagramBridge]
+session_id = %sessionid from step 1%
+ds_user_id = %ds_user_id from step 1%
+cache_timeout = %cache timeout in seconds%
