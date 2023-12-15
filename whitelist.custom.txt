@@ -17,3 +17,4 @@ RegionDalarnaBridge
 AmazonPriceTrackerBridge
 TrafikverketRV5066LudvikaBridge
 NotAlwaysBridge
+DagensNyheterDirektBridge
