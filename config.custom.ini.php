@@ -13,7 +13,7 @@ enabled_bridges[] = *
 ; Find a list of supported timezones at
 ; https://www.php.net/manual/en/timezones.php
 ; timezone = "UTC" (default)
-timezone = "UTC"
+timezone = "Europe/Stockholm"
 
 ; Display a system message to users.
 message = ""
