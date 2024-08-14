@@ -10,6 +10,7 @@ class RedditBridge extends BridgeAbstract
     const MAINTAINER = 'dawidsowa';
     const NAME = 'Reddit Bridge';
     const URI = 'https://old.reddit.com';
+    const CACHE_TIMEOUT = 60 * 60 * 2; // 2h
     const DESCRIPTION = 'Return hot submissions from Reddit';
 
     const PARAMETERS = [
@@ -92,12 +93,12 @@ class RedditBridge extends BridgeAbstract
     {
         $forbiddenKey = 'reddit_forbidden';
         if ($this->cache->get($forbiddenKey)) {
-            throw new HttpException('403 Forbidden', 403);
+            throw new RateLimitException();
         }
 
         $rateLimitKey = 'reddit_rate_limit';
         if ($this->cache->get($rateLimitKey)) {
-            throw new HttpException('429 Too Many Requests', 429);
+            throw new RateLimitException();
         }
 
         try {
@@ -107,9 +108,10 @@ class RedditBridge extends BridgeAbstract
                 // 403 Forbidden
                 // This can possibly mean that reddit has permanently blocked this server's ip address
                 $this->cache->set($forbiddenKey, true, 60 * 61);
-            }
-            if ($e->getCode() === 429) {
-                $this->cache->set($rateLimitKey, true, 60 * 16);
+                throw new RateLimitException();
+            } elseif ($e->getCode() === 429) {
+                $this->cache->set($rateLimitKey, true, 60 * 61);
+                throw new RateLimitException();
             }
             throw $e;
         }
@@ -143,10 +145,14 @@ class RedditBridge extends BridgeAbstract
         $flareInput = $this->getInput('f');
 
         foreach ($subreddits as $subreddit) {
-            $version = 'v0.0.1';
+            $version = 'v0.0.2';
             $useragent = "rss-bridge $version (https://github.com/RSS-Bridge/rss-bridge)";
             $url = self::createUrl($search, $flareInput, $subreddit, $user, $section, $this->queriedContext);
-            $json = getContents($url, ['User-Agent: ' . $useragent]);
+
+            $response = getContents($url, ['User-Agent: ' . $useragent], [], true);
+
+            $json = $response->getBody();
+
             $parsedJson = Json::decode($json, false);
 
             foreach ($parsedJson->data->children as $post) {
