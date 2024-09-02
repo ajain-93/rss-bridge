@@ -2,10 +2,11 @@
 
 final class BridgeCard
 {
-    public static function render(string $bridgeClassName, Request $request): string
-    {
-        $bridgeFactory = new BridgeFactory();
-
+    public static function render(
+        BridgeFactory $bridgeFactory,
+        string $bridgeClassName,
+        ?string $token
+    ): string {
         $bridge = $bridgeFactory->create($bridgeClassName);
 
         $uri = $bridge->getURI();
@@ -14,10 +15,15 @@ final class BridgeCard
         $description = $bridge->getDescription();
         $contexts = $bridge->getParameters();
 
-        if (Configuration::getConfig('proxy', 'url') && Configuration::getConfig('proxy', 'by_bridge')) {
+        // Checkbox for disabling of proxy (if enabled)
+        if (
+            Configuration::getConfig('proxy', 'url')
+            && Configuration::getConfig('proxy', 'by_bridge')
+        ) {
+            $proxyName = Configuration::getConfig('proxy', 'name') ?: Configuration::getConfig('proxy', 'url');
             $contexts['global']['_noproxy'] = [
-                'name' => 'Disable proxy (' . (Configuration::getConfig('proxy', 'name') ?: Configuration::getConfig('proxy', 'url')) . ')',
-                'type' => 'checkbox'
+                'name' => sprintf('Disable proxy (%s)', $proxyName),
+                'type' => 'checkbox',
             ];
         }
 
@@ -46,8 +52,6 @@ final class BridgeCard
 
 
         CARD;
-
-        $token = $request->attribute('token');
 
         if (count($contexts) === 0) {
             // The bridge has zero parameters
