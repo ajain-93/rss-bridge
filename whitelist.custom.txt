@@ -20,3 +20,4 @@ NotAlwaysBridge
 DagensNyheterDirektBridge
 SVTSnabbkollenBridge
 FirefoxReleaseNotesBridge
+TestFaktaBridge
