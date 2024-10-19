@@ -21,3 +21,4 @@ DagensNyheterDirektBridge
 SVTSnabbkollenBridge
 FirefoxReleaseNotesBridge
 TestFaktaBridge
+DacksnackBridge
