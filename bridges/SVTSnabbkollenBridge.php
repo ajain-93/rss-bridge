@@ -3,8 +3,7 @@
 class SVTSnabbkollenBridge extends BridgeAbstract
 {
     const NAME          = 'SVT Nyheter Snabbkollen';
-    const URI           = 'https://www.svt.se/nyheter/snabbkollen/';
-    const BASEURL       = 'https://www.svt.se';
+    const URI           = 'https://www.svt.se/';
     const DESCRIPTION   = 'Latest news by SVT';
     const MAINTAINER    = 'ajain-93';
 
@@ -20,9 +19,12 @@ class SVTSnabbkollenBridge extends BridgeAbstract
         $html = getSimpleHTMLDOM($NEWSURL) or
             returnServerError('Could not request: ' . $NEWSURL);
 
-        foreach ($html->find('article') as $element) {
+        $html_snabbkollen = $html->find('.MostImportant__root___KEF4K',0);
 
-            $link = self::BASEURL . $element->find('a', 0)->getAttribute('href');
+        foreach ($html_snabbkollen->find('a') as $element) {
+            // Debug::log($element);
+
+            $link = self::URI . $element->getAttribute('href');
             // Debug::log($link);
 
             $article_html = getSimpleHTMLDOM($link) or
@@ -34,7 +36,7 @@ class SVTSnabbkollenBridge extends BridgeAbstract
             $title = $article_content->find('h1',0)->plaintext;
             $author = $article_content->find('ul.ArticleFooterAuthors__root___vPAVF', 0)->plaintext;
             $datetime = $article_content->find('time', 0)->getAttribute('datetime');
-            $article_text = $article_content->find('.StructuredArticleBody__root___yznDI', 0);
+            $article_text = $article_content->find('.InlineText__root___g8u-1', 0);
 
             // Debug::log($title);
             // Debug::log($author);
