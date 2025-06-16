@@ -4,7 +4,6 @@ InstagramBridge
 SolnaStadBridge
 TwitterBridge
 YoutubeBridge
-AviationHeraldBridge
 BicyclingKristerIsakssonBridge
 RedditBridge
 SoundcloudBridge
