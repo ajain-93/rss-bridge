@@ -22,3 +22,4 @@ FirefoxReleaseNotesBridge
 TestFaktaBridge
 DacksnackBridge
 SiljanNewsBridge
+SamsungMobileChangelogBridge
