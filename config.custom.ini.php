@@ -6,6 +6,9 @@
 
 [system]
 
+; System environment: "dev" or "prod"
+env = "prod"
+
 ; Only these bridges are available for feed production
 enabled_bridges[] = *
 
@@ -19,7 +22,7 @@ timezone = "Europe/Stockholm"
 message = ""
 
 ; Whether to enable debug mode.
-enable_debug_mode = false
+enable_debug_mode = true
 
 ; Enable debug mode only for these permitted ip addresses
 ; debug_mode_whitelist[] = 127.0.0.1
