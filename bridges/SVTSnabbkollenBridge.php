@@ -3,8 +3,8 @@
 class SVTSnabbkollenBridge extends BridgeAbstract
 {
     const NAME          = 'SVT Nyheter Snabbkollen';
-    const URI           = 'https://www.svt.se/';
-    const DESCRIPTION   = 'Latest news by SVT';
+    const URI           = 'https://www.svt.se';
+    const DESCRIPTION   = 'Latest news by SVT Nyheter Snabbkollen';
     const MAINTAINER    = 'ajain-93';
 
     public function getIcon()
