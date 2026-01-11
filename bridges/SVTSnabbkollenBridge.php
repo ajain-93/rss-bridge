@@ -17,7 +17,7 @@ class SVTSnabbkollenBridge extends BridgeAbstract
         $NEWSURL = self::URI;
 
         $html = getSimpleHTMLDOM($NEWSURL) or
-            returnServerError('Could not request: ' . $NEWSURL);
+            throwServerException('Could not request: ' . $NEWSURL);
 
         $html_snabbkollen = $html->find('.MostImportant__root___KEF4K',0);
 
@@ -28,7 +28,7 @@ class SVTSnabbkollenBridge extends BridgeAbstract
             // $this->logger->debug($link);
 
             $article_html = getSimpleHTMLDOM($link) or
-                returnServerError('Could not request: ' . $link);
+                throwServerException('Could not request: ' . $link);
 
             $article_content = $article_html->find('article', 0);
             // $this->logger->debug($article_content);
