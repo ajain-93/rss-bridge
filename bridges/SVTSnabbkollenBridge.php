@@ -52,4 +52,14 @@ class SVTSnabbkollenBridge extends BridgeAbstract
             ];
         }
     }
+
+    private function searchAttribute($elements, $attribute, $value)
+    {
+        foreach ($elements as $element) {
+            if (strpos($element->getAttribute($attribute), $value) !== false) {
+                return $element;
+            }
+        }
+        return null;
+    }
 }
