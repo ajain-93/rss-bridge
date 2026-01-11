@@ -14,29 +14,29 @@ class TrafikverketRV5066LudvikaBridge extends BridgeAbstract {
 		$html = getSimpleHTMLDOMCached($URL)
 			or returnServerError('Could not request list: ' . $URL);
 
-		// Debug::log('Getting Data');
+		// $this->logger->debug('Getting Data');
 
 		foreach($html->find('ListingItem') as $element) {
-			
+
 			$title = $element->find('Name', 0)->plaintext;
 			$link = extractFromDelimiters($element, "<link>","</Link>");
-			// Debug::log($title);
-			// Debug::log($link);
+			// $this->logger->debug($title);
+			// $this->logger->debug($link);
 
 			// $byline = $element->find('p.byline', 0);
 			$author = 'Trafikverket';
 			$date = strtotime($element->find('Changed', 0)->plaintext);
-			// Debug::log($byline);
-			// Debug::log($date);
-			// Debug::log($author);
-			
+			// $this->logger->debug($byline);
+			// $this->logger->debug($date);
+			// $this->logger->debug($author);
+
 			$picture = $element->find('PictureTag', 0)->plaintext;
 			$picture = self::URI . extractFromDelimiters($picture, "srcset='/","?format");
-			// Debug::log($picture);
-		
+			// $this->logger->debug($picture);
+
 			$preamble = $element->find('Preamble', 0)->plaintext;
-			// Debug::log($preamble);
-			
+			// $this->logger->debug($preamble);
+
 			$html_content = getSimpleHTMLDOMCached($link)
 				or returnServerError('Could not request list: ' . $link);
 			$text = $html_content->find('div#mainBodyArea',0);

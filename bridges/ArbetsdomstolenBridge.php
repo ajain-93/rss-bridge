@@ -27,41 +27,41 @@ class ArbetsdomstolenBridge extends BridgeAbstract {
 		} else {
 			$year = $this->getInput('year');
 		}
-		Debug::log($year);
+		$this->logger->debug($year);
 
 
 		$current_url = self::FETCH . '&Year=' . $year;
-		Debug::log($current_url);
+		$this->logger->debug($current_url);
 
 		$html = getSimpleHTMLDOMCached($current_url)
 		or returnServerError('Could not request list: ' . self::URI);
 
 		$content = $html->find('div[id=content]', 0);
-		Debug::log($content);
+		$this->logger->debug($content);
 		foreach($content->find('li') as $element) {
 			if(count($this->items) > self::LIMIT) {
 				break;
 			}
 
-			Debug::log("Element: " . $element);
+			$this->logger->debug("Element: " . $element);
 
 			$title_text = $element->find('a',0)->plaintext;
-			Debug::log('Metadata: ' . $title_text);
+			$this->logger->debug('Metadata: ' . $title_text);
 
 			$title = substr($title_text,13);
-			Debug::log('Title: ' . $title);
+			$this->logger->debug('Title: ' . $title);
 
 			$date = substr($title_text,0,10);
-			Debug::log('Date: ' . $date);
+			$this->logger->debug('Date: ' . $date);
 
 			$url = self::BASEURI . $element->find('a',0)->href;
-            Debug::log('URL: ' . $url);
+            $this->logger->debug('URL: ' . $url);
 
 			$article_html = getSimpleHTMLDOMCached($url, 18000);
 
 			$article_text = $article_html->find('div.startPageExtrasContent',0)->innertext;
 			$article_text = str_replace('="../', '="' . self::URI . '/' ,$article_text);
-			Debug::log('Content: ' . $article_text);
+			$this->logger->debug('Content: ' . $article_text);
 
 			$item = array();
 			$item['uri'] = $url;

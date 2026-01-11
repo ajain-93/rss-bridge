@@ -56,7 +56,7 @@ class DacksnackBridge extends BridgeAbstract
         $html = getSimpleHTMLDOMCached($NEWSURL, 18000);
 
         foreach ($html->find('a.main-news-item') as $element) {
-            // Debug::log($element);
+            // $this->logger->debug($element);
 
             $title = trim($element->find('h2', 0)->plaintext);
             $category = trim($element->find('.category-tag', 0)->plaintext);

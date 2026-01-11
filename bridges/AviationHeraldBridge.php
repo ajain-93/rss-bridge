@@ -55,14 +55,14 @@ class AviationHeraldBridge extends BridgeAbstract {
 			$options = $options - pow(2,4+$powBase);
 		};
 
-		// Debug::log($this->getInput('crashes'));
-		// Debug::log($this->getInput('accidents'));
-		// Debug::log($this->getInput('incidents'));
-		// Debug::log($this->getInput('news'));
-		// Debug::log($this->getInput('reports'));
-		// Debug::log($options);
+		// $this->logger->debug($this->getInput('crashes'));
+		// $this->logger->debug($this->getInput('accidents'));
+		// $this->logger->debug($this->getInput('incidents'));
+		// $this->logger->debug($this->getInput('news'));
+		// $this->logger->debug($this->getInput('reports'));
+		// $this->logger->debug($options);
 
-		Debug::log(self::URI . "/h?opt=" . $options);
+		$this->logger->debug(self::URI . "/h?opt=" . $options);
 		$url = self::URI . "/h?opt=" . $options;
 
 		$html = getSimpleHTMLDOM($url)
@@ -86,11 +86,11 @@ class AviationHeraldBridge extends BridgeAbstract {
 			$link = $element->find('a', 0);
 			$url = self::URI . $link->href;
 
-			// Debug::log($element);
-			// Debug::log("Article: " . $title);
-			// Debug::log("Link: " . $link);
-			// Debug::log("URL: " . $url);
-			// Debug::log("Category: " . $category);
+			// $this->logger->debug($element);
+			// $this->logger->debug("Article: " . $title);
+			// $this->logger->debug("Link: " . $link);
+			// $this->logger->debug("URL: " . $url);
+			// $this->logger->debug("Category: " . $category);
 
 			$article_html = getSimpleHTMLDOMCached($url, 18000)
 				or returnServerError('Could not request article: ' . self::URI);

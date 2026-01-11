@@ -47,7 +47,7 @@ class SamsungMobileChangelogBridge extends BridgeAbstract
             or throwServerException('Could not request changelog: ' . $url_language);
         $container = $html->find('div.container', 0);
         $this->device_name = trim($html->find('h1', 0)->plaintext);
-        // Debug::log('Device: ' . $device);
+        // $this->logger->debug('Device: ' . $device);
 
         $reachedStart = false;
         foreach ($container->children() as $element) {
@@ -59,7 +59,7 @@ class SamsungMobileChangelogBridge extends BridgeAbstract
                 // Skip non-changelog elements
                 continue;
             } else if ($element->tag == 'div' && $element->getAttribute('class') == 'row') {
-                // Debug::log('Processing row element');
+                // $this->logger->debug('Processing row element');
                 $build = $element->find('div', 0)->plaintext;
                 $build = str_replace(self::STR_BUILD_NUMBER . ' : ', '', $build);
 

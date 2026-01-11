@@ -18,21 +18,21 @@ class BicyclingKristerIsakssonBridge extends BridgeAbstract {
 			$link = $title_span->find('a', 0);
 			$url = $link->href;
 
-            // Debug::log('');
+            // $this->logger->debug('');
 
-            // Debug::log($title_span);
-            // Debug::log($title);
-            // Debug::log($url);
+            // $this->logger->debug($title_span);
+            // $this->logger->debug($title);
+            // $this->logger->debug($url);
 
             $byline = $element->find('p.byline', 0);
             $date = $byline->find('span',0)->plaintext;
             $author = $byline->find('a',0)->plaintext;
 
-            // Debug::log('');
+            // $this->logger->debug('');
 
-            // Debug::log($byline);
-            // Debug::log($date);
-            // Debug::log($author);
+            // $this->logger->debug($byline);
+            // $this->logger->debug($date);
+            // $this->logger->debug($author);
 
             $content = $element->find('div.row', 0);
 

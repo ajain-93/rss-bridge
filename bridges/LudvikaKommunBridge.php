@@ -23,7 +23,7 @@ class LudvikaKommunBridge extends BridgeAbstract {
 
 		foreach($html->find('li.sv-channel-item') as $element) {
 
-			// Debug::log($element);
+			// $this->logger->debug($element);
 
 			$link = $element->find('a', 0);
 			$url = self::URI . $link->href;
@@ -32,37 +32,37 @@ class LudvikaKommunBridge extends BridgeAbstract {
 			$text = '';
 			$datetime = strtotime($element->find('time', 0)->datetime);
 
-			// Debug::log($link);
-			// Debug::log($url);
-			// Debug::log($title);
-			// Debug::log($datetime);
+			// $this->logger->debug($link);
+			// $this->logger->debug($url);
+			// $this->logger->debug($title);
+			// $this->logger->debug($datetime);
 
 			$article_html = getSimpleHTMLDOMCached($url, 1800)
 			or returnServerError('Could not request article: ' . $url);
 
 			$content_div = $article_html->find('.pagecontent.sv-layout', 1);
-			// Debug::log($content_div);
+			// $this->logger->debug($content_div);
 
 			foreach($content_div->find('div.sv-text-portlet.sv-use-margins') as $div) {
 
-				// Debug::log($div);
+				// $this->logger->debug($div);
 
 				$isTitle = strlen($div->find('div#Rubrik', 0)) > 0;
 				if ($isTitle) {
 					$title = $div->find('div.sv-text-portlet-content', 0)->plaintext;
-					// Debug::log($title);
+					// $this->logger->debug($title);
 				}
 
 				$isIntro = strlen($div->find('div#Ingress', 0)) > 0;
 				if ($isIntro) {
 					$intro = $div->find('div.sv-text-portlet-content', 0);
-					// Debug::log($intro);
+					// $this->logger->debug($intro);
 				}
 
 				$isText = strlen($div->find('div#Innehall', 0)) > 0;
 				if ($isText) {
 					$text = $div->find('div.sv-text-portlet-content', 0);
-					// Debug::log($text);
+					// $this->logger->debug($text);
 				}
 			}
 

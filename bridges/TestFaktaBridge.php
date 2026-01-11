@@ -59,7 +59,7 @@ class TestFaktaBridge extends BridgeAbstract
         $html = getSimpleHTMLDOMCached($NEWSURL, 18000);
 
         foreach ($html->find('.row-container') as $element) {
-            // Debug::log($element);
+            // $this->logger->debug($element);
 
             $title = $element->find('h2', 0)->plaintext;
             $category = trim($element->find('.red-label', 0)->plaintext);

@@ -24,22 +24,22 @@ class SolnaStadBridge extends BridgeAbstract {
 			$content_div = $article_html->find('.pagecontent.sv-layout', 0);
 			foreach($content_div->find('div.sv-text-portlet.sv-use-margins') as $div) {
 
-				// Debug::log($div);
+				// $this->logger->debug($div);
 
 				$isTitle = strlen($div->find('div#Rubrik', 0)) > 0;
 				if ($isTitle) {
 					$title = $div->find('div.sv-text-portlet-content', 0)->plaintext;
-					// Debug::log($title);
+					// $this->logger->debug($title);
 				}
 				$isIntro = strlen($div->find('div#Ingress', 0)) > 0;
 				if ($isIntro) {
 					$intro = $div->find('div.sv-text-portlet-content', 0);
-					// Debug::log($intro);
+					// $this->logger->debug($intro);
 				}
 				$isText = strlen($div->find('div#Text', 0)) > 0;
 				if ($isText) {
 					$text = $div->find('div.sv-text-portlet-content', 0);
-					// Debug::log($text);
+					// $this->logger->debug($text);
 				}
 			}
 
