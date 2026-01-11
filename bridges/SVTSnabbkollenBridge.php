@@ -3,8 +3,8 @@
 class SVTSnabbkollenBridge extends BridgeAbstract
 {
     const NAME          = 'SVT Nyheter Snabbkollen';
-    const URI           = 'https://www.svt.se/';
-    const DESCRIPTION   = 'Latest news by SVT';
+    const URI           = 'https://www.svt.se';
+    const DESCRIPTION   = 'Latest news by SVT Nyheter Snabbkollen';
     const MAINTAINER    = 'ajain-93';
 
     public function getIcon()
@@ -17,9 +17,9 @@ class SVTSnabbkollenBridge extends BridgeAbstract
         $NEWSURL = self::URI;
 
         $html = getSimpleHTMLDOM($NEWSURL) or
-            returnServerError('Could not request: ' . $NEWSURL);
+            throwServerException('Could not request: ' . $NEWSURL);
 
-        $html_snabbkollen = $html->find('.MostImportant__root___KEF4K',0);
+        $html_snabbkollen = $this->searchAttribute($html->find('ul'), 'class', 'MostImportant__list');
 
         foreach ($html_snabbkollen->find('a') as $element) {
             // $this->logger->debug($element);
@@ -28,15 +28,15 @@ class SVTSnabbkollenBridge extends BridgeAbstract
             // $this->logger->debug($link);
 
             $article_html = getSimpleHTMLDOM($link) or
-                returnServerError('Could not request: ' . $link);
+                throwServerException('Could not request: ' . $link);
 
             $article_content = $article_html->find('article', 0);
             // $this->logger->debug($article_content);
 
             $title = $article_content->find('h1',0)->plaintext;
-            $author = $article_content->find('ul.ArticleFooterAuthors__root___vPAVF', 0)->plaintext;
-            $datetime = $article_content->find('time', 0)->getAttribute('datetime');
-            $article_text = $article_content->find('.InlineText__root___g8u-1', 0);
+            $author = $this->searchAttribute($article_content->find('span'), 'class', 'ArticleFooterAuthor__name')->plaintext;
+            $datetime = $this->searchAttribute($article_content->find('time'), 'class', 'ArticleFooterTimestamps__timestamp')->getAttribute('datetime');
+            $article_text = $this->searchAttribute($article_content->find('div'), 'class', 'TextArticle__body');
 
             // $this->logger->debug($title);
             // $this->logger->debug($author);
@@ -51,5 +51,15 @@ class SVTSnabbkollenBridge extends BridgeAbstract
                 'content' => trim($article_text),
             ];
         }
+    }
+
+    private function searchAttribute($elements, $attribute, $value)
+    {
+        foreach ($elements as $element) {
+            if (strpos($element->getAttribute($attribute), $value) !== false) {
+                return $element;
+            }
+        }
+        return null;
     }
 }
