@@ -21,6 +21,10 @@ class SVTSnabbkollenBridge extends BridgeAbstract
 
         $html_snabbkollen = $this->searchAttribute($html->find('ul'), 'class', 'MostImportant__list');
 
+        if (!$html_snabbkollen) {
+            // If no Snabbkollen articles available.
+            return;
+        }
         foreach ($html_snabbkollen->find('a') as $element) {
             // $this->logger->debug($element);
 
