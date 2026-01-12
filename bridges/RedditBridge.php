@@ -175,7 +175,7 @@ class RedditBridge extends BridgeAbstract
 
             $response = getContents($url, ['User-Agent: ' . $useragent], [], true);
 
-            $json = end($response);
+            $json = $response->getBody();
 
             $parsedJson = Json::decode($json, false);
 
