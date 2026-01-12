@@ -5,7 +5,7 @@
 services:
 
     rss-bridge:
-        image: ghcr.io/rss-bridge/rss-bridge:latest
+        image: ghcr.io/rss-bridge/rss-bridge:2025-08-05
         restart: unless-stopped
         environment:
             - PUID=1000
