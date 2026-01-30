@@ -13,9 +13,10 @@ services:
             - PGID=1000
             - TZ=Europe/Stockholm
         volumes:
+            - ./config:/config
+            # - ./config.custom.ini.php:/config/config.ini.php
             - ./bridges:/app/bridges/
-            - ./whitelist.custom.txt:/app/whitelist.txt
-            - ./config.custom.ini.php:/app/config.ini.php
+            # - ./whitelist.custom.txt:/app/whitelist.txt
         ports:
             - 3030:80
         logging:
