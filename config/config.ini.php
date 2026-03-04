@@ -32,6 +32,7 @@ enabled_bridges[] = SamsungMobileChangelogBridge
 enabled_bridges[] = SiljanNewsBridge
 enabled_bridges[] = SolnaStadBridge
 enabled_bridges[] = SoundcloudBridge
+enabled_bridges[] = SVTSenasteNyttBridge
 enabled_bridges[] = SVTSnabbkollenBridge
 enabled_bridges[] = TestFaktaBridge
 enabled_bridges[] = TrafikverketRV5066LudvikaBridge
@@ -85,7 +86,7 @@ custom_timeout = false
 
 ;file_path = "/var/log/rss-bridge.log"
 ; DEBUG, INFO, WARNING or ERROR
-;file_level = "INFO"
+file_level = "DEBUG"
 
 [admin]
 
