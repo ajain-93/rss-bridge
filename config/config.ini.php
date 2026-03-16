@@ -38,6 +38,7 @@ enabled_bridges[] = SVTSnabbkollenBridge
 enabled_bridges[] = TestFaktaBridge
 enabled_bridges[] = TrafikverketRV5066LudvikaBridge
 enabled_bridges[] = TwitterBridge
+enabled_bridges[] = VasterasStadBridge
 enabled_bridges[] = YoutubeBridge
 
 
