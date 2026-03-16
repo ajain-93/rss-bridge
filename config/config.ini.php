@@ -14,6 +14,7 @@ env = "dev"
 enabled_bridges[] = AmazonPriceTrackerBridge
 enabled_bridges[] = ArbetsdomstolenBridge
 enabled_bridges[] = BicyclingKristerIsakssonBridge
+enabled_bridges[] = BRFKungsljusetBridge
 enabled_bridges[] = ComicsKingdomBridge
 enabled_bridges[] = DacksnackBridge
 enabled_bridges[] = DagensNyheterDirektBridge
