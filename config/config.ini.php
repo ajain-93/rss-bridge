@@ -20,6 +20,7 @@ enabled_bridges[] = DacksnackBridge
 enabled_bridges[] = DagensNyheterDirektBridge
 enabled_bridges[] = FacebookBridge
 enabled_bridges[] = FirefoxReleaseNotesBridge
+enabled_bridges[] = FR24LiveNewsBridge
 enabled_bridges[] = GithubPackagesBridge
 enabled_bridges[] = GoComicsBridge
 enabled_bridges[] = GoogleSearchBridge
