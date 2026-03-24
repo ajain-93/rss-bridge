@@ -30,6 +30,7 @@ enabled_bridges[] = NotAlwaysBridge
 enabled_bridges[] = RedditBridge
 enabled_bridges[] = RegionDalarnaBridge
 enabled_bridges[] = RegionStockholmBridge
+enabled_bridges[] = RegionVastmanlandBridge
 enabled_bridges[] = SamsungMobileChangelogBridge
 enabled_bridges[] = SiljanNewsBridge
 enabled_bridges[] = SolnaStadBridge
