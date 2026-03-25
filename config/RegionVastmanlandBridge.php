@@ -4,7 +4,7 @@ class RegionVastmanlandBridge extends BridgeAbstract
 	const NAME = 'Region Västmanland';
 	const BASEURI = 'https://regionvastmanland.se';
 	const URI = '/nyheter';
-	const DESCRIPTION = 'Latest news Region Västmanland.';
+	const DESCRIPTION = 'Returns the latest news Region Västmanland.';
 	const MAINTAINER = 'ajain-93';
 
 	public function collectData()
@@ -16,7 +16,7 @@ class RegionVastmanlandBridge extends BridgeAbstract
 
 			$author = $element->find('div.meta', 0)->plaintext;
 			$title = $element->find('h2', 0)->plaintext;
-			$url = self::BASEURI . $element->find('div.meta', 0)->href;
+			$url = self::BASEURI . $element->find('a', 0)->href;
 
 			$date = $element->find('div.newslist--listed__list-item__content__date', 0)->plaintext;
 			$months = [
