@@ -247,3 +247,20 @@ favicon.ico
 
 #Crawler
 robots.txt
+
+# Custom bridges in config/ that are not in the main repository
+bridges/ArbetsdomstolenBridge.php
+bridges/BicyclingKristerIsakssonBridge.php
+bridges/BRFKungsljusetBridge.php
+bridges/FinnairPressReleaseBridge.php
+bridges/FR24LiveNewsBridge.php
+bridges/LudvikaKommunBridge.php
+bridges/RegionDalarnaBridge.php
+bridges/RegionStockholmBridge.php
+bridges/RegionVastmanlandBridge.php
+bridges/SiljanNewsBridge.php
+bridges/SolnaStadBridge.php
+bridges/SVTSenasteNyttBridge.php
+bridges/SVTSnabbkollenBridge.php
+bridges/TrafikverketRV5066LudvikaBridge.php
+bridges/VasterasStadBridge.php
